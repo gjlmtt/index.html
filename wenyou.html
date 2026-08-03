@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>AI 无限文字冒险</title>
+    <风格>
+        身体 { 字体系列: 无衬线字体; 背景:# 1a 1a 2e；颜色:# eee填料: 10像素; 最大宽度: 600像素; 边缘: 汽车; }
+        #聊天框 { 背景:# 16213e边框半径: 10像素; 填料: 15像素; 高度: 60vh; 溢出-y: 汽车; 页边距-底部: 10像素; 边界: 1像素 固体# 0f3460}
+        .msg { margin-bottom: 12px; white-space: pre-wrap; word-break: break-word; }
+        .msg.ai { color: #a6e3e9; }
+        .msg.user { color: #f9d371; text-align: right; }
+        #input-area { display: flex; gap: 8px; margin-bottom: 10px; }
+        #user-input { flex: 1; padding: 12px; border-radius: 8px; border: none; background: #0f3460; color: white; }
+        button { padding: 12px 18px; border: none; border-radius: 8px; background: #e94560; color: white; font-weight: bold; cursor: pointer; }
+        #api-section { display: flex; gap: 5px; margin-bottom: 10px; align-items: center; }
+        #api-key { flex: 1; padding: 8px; border-radius: 6px; border: none; background: #0f3460; color: white; }
+        .small-btn { padding: 8px 12px; background: #533483; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <h2>🗺️ 无尽幻境</h2>
+    <div id="api-section">
+        <input type="password" id="api-key" placeholder="输入你的 OpenAI API Key">
+        <button class="small-btn" onclick="saveApiKey()">保存</button>
+        <跨度 身份证明（identification）=“关键状态” 风格="字体大小:0.7rem;"></span>
+    </差异>
+    <差异 身份证明(识别)="聊天室">
+        <差异 班级="味精艾”>⚔️ 系统：你在一座古老神殿中醒来，四周刻着发光的符文…… （输入你想做的事）</div>
+    </差异>
+    <差异 身份证明(识别)="输入区域">
+        <投入 类型="文本" 身份证明(识别)="用户输入" placeholder="例如：查看符文" autocomplete="off">
+        <按钮 onclick="发送消息()">发送</按钮>
+    </差异>
+
+    <脚本>
+// 初始化：从存储中加载API密钥
+常数apiKeyInput =文件。getElementById(' API-key ')；
+常数 关键状态=文件。getElementById(“key-status”)；
+常数storedKey =本地存储。getItem(' open ai _ key ')；
+如果(storedKey) {
+apiKeyInput。价值= storedKey
+            关键状态.文本内容 = '✅ 已加载';
+        }
+
+功能saveApiKey() {
+常数 键= apiKeyInput。价值。trim()；
+            如果 (键) {
+本地存储。设置项目(' openai_key '，key)；
+                关键状态.文本内容 = '✅ 已保存';
+            }
+        }
+
+        // 游戏历史（上下文记忆）
+        让 信息 = [
+            { 作用: “系统”, 内容: "你是一个文字冒险游戏的叙述者。背景是高魔幻世界。玩家每次输入行动，你都要根据行动推进故事，描述场景变化和结果，保持沉浸感。用中文回复，控制在200字以内，除非玩家要求详细描述。" }
+        ];
+
+异步函数sendMessage() {
+常数输入字段=文档getelementbyid('用户输入');
+const userText =输入字段。价值。trim()；
+如果(!用户文本)返回；
+
+const API键=本地存储。getitem(' open ai _ key ')；
+如果(！apiKey) {
+警报('请先输入并保存你的API密钥！');
+返回；
+            }
+
+            // 显示用户消息
+<!文档类型html >
+<!文档类型html >
+            输入字段.价值 = '';
+
+            // 显示加载状态
+常数 加载Div = appendMessage('ai '，'⏳ 命运之轮转动中...');
+<!DOCTYPE html>
+            尝试 {
+                常数 反应 = 等待 取得(' https://API . open ai . com/v1/chat/completions ', {
+                    方法: '发布',
+                    头球: {
+                        '内容类型': '应用程序/json ',
+                        '授权': “来人${apiKey}`
+                    },
+                    身体: JSON.字符串化({
+                        模型: ' gpt-3.5涡轮增压',   // 想更自由可换 gpt-4o
+                        信息: 信息,
+                        温度: 0.9   // 创造性
+                    })
+                });
+
+                常数 数据 = 等待 反应.json();
+                // 移除加载文字
+加载Div。去除();
+
+                数据 数据数据.如果 && 数据.选择.长度 > 0) {
+常数aiText =数据。选择[0].消息。内容；
+appendMessage(爱，aiText)；
+信息。推({ 作用: "助理", 内容:aiText })；
+                } 其他 {
+appendMessage(爱,艾没有返回有效内容,请检查应用程序接口密钥或网络。');
+                }
+            } 捕捉 (错误) {
+装货差异 . 去除()；加载差异.去除();
+附加消息（爱,'❌连接失败:'+错误。留言);appendMessage('ai '，'❌连接失败: ' + 错误。消息);
+            }
+        }
+
+函数附加消息（角色,文本) {功能附加消息(角色，文本) {
+常数 聊天框=文件。使用getelementbyid('聊天框');const chatBox = document . getelementbyid('聊天框');
+常数 味精 差异=文件。创建元素(DIV”)；const msg div = document . createelement(div ')；
+msgDiv。类名 = `消息${作用}`;msgDiv。类名= "消息${作用}`;
+msgDiv.文本内容 = textmsgDiv.文本内容 = 文本;
+聊天框 . 关于Appendchild(味精差异)；聊天框.appendchild(msgDiv);
+聊天框.滚动顶部 = 聊天框.滚动高度；聊天框.关于滚动顶部 = chatBox.滚动高度;
+返回 msgDiv;返回 msgDiv;
+        }
+
+        // 回车发送
+document.getElementById(“用户输入”)。addEventListener('keydown '，函数(e) {
